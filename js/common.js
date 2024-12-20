@@ -157,6 +157,105 @@ let common = {
             html('table', result.html);
         });
     },
+
+    // users
+
+    user_add_window: (e) => {
+        // actions
+        cancel_event(e);
+        common.menu_popup_hide_all('all');
+        // vars
+        let location = {dpt: 'user', act: 'add_window'};
+        // call
+        request({location: location}, (result) => {
+            common.modal_show(400, result.html);
+        });
+    },
+
+    user_edit_window: (user_id = 0) => {
+        // vars
+        let data = {
+            user_id: user_id,
+            first_name: gv('First name'),
+            last_name: gv('Last name'),
+            phone: gv('Phone'),
+            email: gv('Email'),
+            plots: gv('Plots'),
+            offset: global.offset
+        };
+        let location = {dpt: 'user', act: 'edit_window'};
+        // call
+        request({location: location, data: data}, (result) => {
+            common.modal_show(400, result.html);
+        });
+    },
+
+    create_or_update_user: (user_id, e) => {
+
+        let action = 'update_user';
+        if (!user_id) {
+            action = 'create_user';
+        }
+
+        let data = {
+            user_id: user_id ?? null,
+            first_name: gv('first_name'),
+            last_name: gv('last_name'),
+            phone: gv('phone'),
+            email: gv('email').toLowerCase(),
+            plot_id: gv('plot_id'),
+        }
+
+        let requiredFields = ['first_name', 'last_name', 'email', 'phone'];
+        let isValid = true;
+
+        requiredFields.forEach((field) => {
+            const input = document.getElementById(field);
+            if (!data[field]) {
+                isValid = false;
+                input.style.border = '2px solid red';
+            } else {
+                input.style.border = '';
+            }
+        });
+
+        if (!isValid) {
+            return false;
+        }
+
+        cancel_event(e);
+        common.menu_popup_hide_all('all');
+        let location = {dpt: 'user', act: action};
+        request({location: location, data: data}, (result) => {
+            common.modal_hide();
+            html('table', result.html);
+        });
+    },
+
+    user_delete: (user_id, e) => {
+        if (!confirm("Are you sure you want to delete the user?")) {
+            return false;
+        }
+
+        let data = {
+            user_id: user_id
+        }
+
+        cancel_event(e);
+        common.menu_popup_hide_all('all');
+        let location = {dpt: 'user', act: 'delete_user'};
+        request({location: location, data: data}, (result) => {
+            html('table', result.html);
+        });
+    },
+
+    validateField: (input) => {
+        if (input.value.trim() !== '') {
+            input.style.border = '';
+        } else {
+            input.style.border = '2px solid red';
+        }
+    },
 }
 
 add_event(document, 'DOMContentLoaded', common.init);

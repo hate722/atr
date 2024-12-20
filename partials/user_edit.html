@@ -1,0 +1,33 @@
+<div class="modal_head">
+    <i class="icon_close" onclick="common.modal_hide()"></i>
+</div>
+<div class="modal_body">
+    <div class="input_group_modal">
+        <div>First name</div>
+        <input oninput="common.validateField(this)" required type="text" id="first_name" value="{if $user}{$user.first_name}{else}{/if}">
+    </div>
+    <div class="input_group_modal">
+        <div>Last name</div>
+        <input oninput="common.validateField(this)" required type="text" id="last_name" value="{if $user}{$user.last_name}{else}{/if}">
+    </div>
+    <div class="input_group_modal">
+        <div>Phone</div>
+        <input oninput="common.validateField(this)" required type="number" id="phone" value="{if $user}{$user.phone}{else}{/if}">
+    </div>
+    <div class="input_group_modal">
+        <div>Email</div>
+        <input oninput="common.validateField(this)" required type="email" id="email" value="{if $user}{$user.email}{else}{/if}">
+    </div>
+    <div class="input_group_modal">
+        <div>Plot id</div>
+        <input type="text" id="plot_id" value="{if $user}{$user.plot_id}{else}{/if}">
+    </div>
+    <div class="modal_controls">
+        <div>
+            <div class="btn_modal" onclick="common.create_or_update_user({if $user}{$user.id}{else}{/if})">Save</div>
+        </div>
+        <div>
+            <div class="btn_modal light" onclick="common.modal_hide();">Cancel</div>
+        </div>
+    </div>
+</div>
